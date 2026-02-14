@@ -1,16 +1,15 @@
-import Header from './components/UI/Header/Header';
-import Home from './pages/Home';
 import './styles/app.scss';
+import { Content } from './components/UI/Content/Content';
+import { Header } from './components/UI/Header/Header';
 
 function App() {
   return (
     <div className="wrapper">
       <Header />
-      <div className="content">
-        <Home />
-      </div>
+      <Content/>
     </div>
   );
 }
+
 
 export default App;

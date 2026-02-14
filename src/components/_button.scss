@@ -1,5 +1,5 @@
-@use './libs/normalize' as *;
-@use './variables';
+@use '../styles/variables' as *;
+@use '../styles/libs/normalize';
 
 .button {
   display: inline-block;
@@ -11,13 +11,16 @@
   cursor: pointer;
   transition:
     background-color var(--duration) ease-in-out,
-    border-color var(--duration) ease-in-out;
+    border-color var(--duration) ease-in-out,
+    filter var(--duration) ease-in-out,
+    transform var(--duration) ease-in-out;
   border: 1px solid transparent;
-  @include noselect();
+
+  @include normalize.noselect();
 
   &,
   span {
-    color: #fff;
+    color: var(--white);
   }
 
   i,
@@ -28,12 +31,11 @@
   }
 
   &:hover {
-    background-color: color-mix(in srgb, var(--orange) 92%, var(--black));
+    filter: brightness(0.92);
   }
 
   &:active {
-    background-color: color-mix(in srgb, var(--orange) 88%, var(--black));
-
+    filter: brightness(0.88);
     transform: translateY(1px);
   }
 
@@ -53,13 +55,14 @@
 
     &:hover,
     &:active {
-      background-color: color-mix(in srgb, var(--black) 90%, white);
+      filter: brightness(1.1);
     }
   }
 
   &--outline {
-    background-color: #fff;
+    background-color: var(--white);
     border-color: var(--orange);
+
     &,
     span {
       color: var(--orange);
@@ -76,25 +79,25 @@
 
       &,
       span {
-        color: #fff;
+        color: var(--white);
       }
 
       svg {
         path {
-          fill: #fff;
+          fill: var(--white);
         }
       }
     }
 
     &:active {
-      background-color: color-mix(in srgb, var(--orange) 92%, var(--black));
+      filter: brightness(0.92);
     }
   }
 
   &__delimiter {
     width: 1px;
     height: 25px;
-    background-color: rgba(255, 255, 255, 0.25);
+    background-color: var(--white-delimiter);
     margin-left: 14px;
     margin-right: 14px;
   }
@@ -111,7 +114,7 @@
 
     &:hover {
       i {
-        background-color: #fff;
+        background-color: var(--white);
         color: var(--orange);
       }
     }
@@ -120,7 +123,7 @@
       display: inline-block;
       border-radius: 30px;
       background-color: var(--orange);
-      color: #fff;
+      color: var(--white);
       font-weight: 600;
       width: 22px;
       height: 22px;
