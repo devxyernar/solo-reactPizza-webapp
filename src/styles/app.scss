@@ -15,6 +15,11 @@ body {
   margin: 50px auto;
   border-radius: 10px;
   max-width: 1400px;
+
+  @media (max-width: 645px) {
+    width: calc(100vw - 20px);
+    margin-top: 15px;
+  }
 }
 
 .content {
@@ -25,15 +30,66 @@ body {
   }
 
   &__items {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+    grid-column-gap: 40px;
+    grid-row-gap: 20px;
+
+    @media (max-width: 1440px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    @media (max-width: 1280px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (max-width: 750px) {
+      grid-template-columns: repeat(1, 1fr);
+    }
   }
 
   &__top {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    @media (max-width: 1250px) {
+      flex-direction: column-reverse;
+      // 1. УБИВАЕМ ЦЕНТРИРОВАНИЕ для всей колонки:
+      align-items: flex-start;
+
+      .categories {
+        // 2. Заставляем контейнер занять всю ширину экрана (от левого до правого края)
+        width: 100%;
+        overflow-x: auto;
+        margin-top: 30px;
+
+        ul {
+          display: flex;
+          // 3. Список должен быть таким широким, сколько в нем контента (чтобы работал скролл)
+          width: max-content;
+          margin: 0;
+          padding: 0;
+        }
+      }
+
+      .sort {
+        // 4. Сортировке персонально приказываем встать по центру
+        align-self: center;
+        b {
+          display: none;
+        }
+      }
+    }
+
+    @media (max-width: 1050px) {
+      .categories {
+        ul {
+          li {
+            padding: 9px 20px;
+          }
+        }
+      }
+    }
   }
 }
 
@@ -106,6 +162,9 @@ body {
     }
   }
 
+  .content__items {
+    display: block;
+  }
   &__item {
     display: flex;
     width: 100%;

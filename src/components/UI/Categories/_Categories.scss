@@ -1,7 +1,6 @@
 @use '../../../styles/variables' as *;
 @use '../../../styles/libs/normalize';
 
-
 .sort {
   position: relative;
   &__label {
@@ -54,7 +53,6 @@
   }
 }
 
-
 .categories {
   ul {
     display: flex;
@@ -66,7 +64,9 @@
       margin-right: 10px;
       font-weight: bold;
       cursor: pointer;
-      transition: background-color 0.1s ease-in-out, filter 0.1s ease-in-out;
+      transition:
+        background-color 0.1s ease-in-out,
+        filter 0.1s ease-in-out;
       @include normalize.noselect();
 
       &:hover {
@@ -78,7 +78,7 @@
       }
 
       &.active {
-        background-color: var(--category-active-background);
+        background-color: var(--black);
         color: var(--white);
       }
     }
