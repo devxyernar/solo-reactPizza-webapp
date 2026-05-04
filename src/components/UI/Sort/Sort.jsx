@@ -39,7 +39,7 @@ export const Sort = ({ value, onChangeSort }) => {
             {sorting.map((obj, i) => (
               <li
                 key={i}
-                onClick={() => onChangeSort(obj)}
+                onClick={() => setSelectedSort(obj)}
                 className={value.sortProperty == obj.sortProperty ? 'active' : ''}
               >
                 {obj.name}

@@ -79,7 +79,6 @@ export const Cart = () => {
             </div>
           </div>
           <div className="content__items">
-            {/* Элемент корзины 1 */}
             <div className="cart__item">
               <div className="cart__item-img">
                 <img
@@ -155,7 +154,6 @@ export const Cart = () => {
                 </div>
               </div>
             </div>
-            {/* Элемент корзины 2 */}
             <div className="cart__item">
               <div className="cart__item-img">
                 <img
@@ -231,7 +229,6 @@ export const Cart = () => {
                 </div>
               </div>
             </div>
-            {/* Элемент корзины 3 */}
             <div className="cart__item">
               <div className="cart__item-img">
                 <img
