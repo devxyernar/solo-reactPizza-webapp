@@ -1,15 +1,40 @@
+import { useCallback, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSearchValue } from '../../../redux/slices/filterSlice';
+
+import { debounce } from 'lodash';
+
+import { setSearchValue } from '@/store/slices/filterSlice';
+
 import styles from './SearchBar.module.scss';
 
 export const SearchBar = () => {
+  const [value, setValue] = useState('');
+
   const searchValue = useSelector((state) => state.filter.searchValue);
 
   const dispatch = useDispatch();
+
+  const inputRef = useRef();
+
   const onChangeSearch = (i) => {
     dispatch(setSearchValue(i));
   };
-  console.log(onChangeSearch);
+  const onClickClear = () => {
+    dispatch(setSearchValue(''));
+    setValue('');
+    inputRef.current.focus();
+  };
+  const updateSearchValue = useCallback(
+    debounce((str) => {
+      dispatch(setSearchValue(str));
+    }, 1000),
+    [],
+  );
+  const onChangeInput = (event) => {
+    setValue(event.target.value);
+    updateSearchValue(event.target.value);
+  };
+
   return (
     <div className={styles.root}>
       <svg
@@ -28,16 +53,18 @@ export const SearchBar = () => {
           strokeLinejoin="round"
         />
       </svg>
-      {/* контролируемый инпут */}
+
       <input
-        value={searchValue}
-        onChange={(event) => onChangeSearch(event.target.value)}
+        ref={inputRef}
+        value={value}
+        onChange={onChangeInput}
         className={styles.input}
         placeholder="Поиск пиццы..."
       />
-      {searchValue && (
+
+      {value && (
         <svg
-          onClick={() => onChangeSearch('')}
+          onClick={onClickClear}
           className={styles.clearIcon}
           width="800px"
           height="800px"
@@ -52,6 +79,7 @@ export const SearchBar = () => {
             strokeLinecap="round"
             strokeLinejoin="round"
           />
+
           <path
             d="M3 3.32001L21 21.32"
             stroke="#000000"

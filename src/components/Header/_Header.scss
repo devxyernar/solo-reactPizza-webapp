@@ -1,5 +1,5 @@
-@use '../../../styles//libs/normalize' as *;
-@use '../../../styles//variables';
+@use '../../styles/libs/normalize' as *;
+@use '../../styles/variables';
 
 .header {
   border-bottom: 1px solid var(--gray-line);

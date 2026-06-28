@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router';
-import { clearCart, selectTotalAmount, selectTotalQuantity } from '../../../redux/slices/cartSlice';
-import { SearchBar } from '../SearchBar/SearchBar';
+import { clearCart, selectTotalAmount, selectTotalQuantity } from '@/store/slices/cartSlice';
+import { SearchBar } from '@/components/SearchBar/SearchBar';
+
 export const Header = () => {
   const totalAmount = useSelector(selectTotalAmount);
   const totalQuantity = useSelector(selectTotalQuantity);

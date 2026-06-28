@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addItems } from '../../../redux/slices/cartSlice';
+import { addItems } from '@/store/slices/cartSlice';
 
 export const ContentItems = ({ id, title, price, imageUrl, sizes, types }) => {
   const totalPizzaCount = useSelector((state) =>

@@ -1,15 +1,16 @@
 import { useState } from 'react';
 
+export const sortList = [
+  { name: 'популярности(DESC)', sortProperty: 'rating' },
+  { name: 'популярности(ASC)', sortProperty: '-rating' },
+  { name: 'цена(DESC)', sortProperty: 'price' },
+  { name: 'цена(ASC)', sortProperty: '-price' },
+  { name: 'алфавиту(DESC)', sortProperty: 'title' },
+  { name: 'алфавиту(ASC)', sortProperty: '-title' },
+];
+
 export const Sort = ({ value, onChangeSort }) => {
   const [popup, setPopup] = useState(false);
-  const sorting = [
-    { name: 'популярности(DESC)', sortProperty: 'rating' },
-    { name: 'популярности(ASC)', sortProperty: '-rating' },
-    { name: 'цена(DESC)', sortProperty: 'price' },
-    { name: 'цена(ASC)', sortProperty: '-price' },
-    { name: 'алфавиту(DESC)', sortProperty: 'title' },
-    { name: 'алфавиту(ASC)', sortProperty: '-title' },
-  ];
 
   const setSelectedSort = (i) => {
     onChangeSort(i);
@@ -36,7 +37,7 @@ export const Sort = ({ value, onChangeSort }) => {
       {popup && (
         <div className="sort__popup">
           <ul>
-            {sorting.map((obj, i) => (
+            {sortList.map((obj, i) => (
               <li
                 key={i}
                 onClick={() => setSelectedSort(obj)}

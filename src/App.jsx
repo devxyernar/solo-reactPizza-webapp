@@ -1,10 +1,10 @@
 import { createContext, useState } from 'react';
 import { Route, Routes } from 'react-router';
-import { Header } from './components/UI/Header/Header';
-import { Cart } from './pages/Cart/';
-import { Home } from './pages/Home';
-import { NotFound } from './pages/NotFound';
-import './styles/app.scss';
+import { Header } from '@/components/Header/Header';
+import { Cart } from '@/pages/Cart/Cart';
+import { Home } from '@/pages/Home/Home';
+import { NotFound } from '@/pages/NotFound/NotFound';
+import '@/styles/app.scss';
 
 export const SearchContext = createContext();
 
