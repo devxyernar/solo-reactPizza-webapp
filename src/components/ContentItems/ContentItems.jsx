@@ -1,6 +1,6 @@
+import { addItems } from '@/store/slices/cartSlice';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addItems } from '@/store/slices/cartSlice';
 
 export const ContentItems = ({ id, title, price, imageUrl, sizes, types }) => {
   const totalPizzaCount = useSelector((state) =>
@@ -14,8 +14,7 @@ export const ContentItems = ({ id, title, price, imageUrl, sizes, types }) => {
   const dispatch = useDispatch();
   const [activeType, setActiveType] = useState(0);
   const [activeSize, setActiveSize] = useState(0);
-  const typesNames = ['тонкое', 'традицонное'];
-
+  const typesNames = ['тонкое', 'традиционное'];
   const onClickAdd = () => {
     const pizzaItem = {
       title,
@@ -34,13 +33,13 @@ export const ContentItems = ({ id, title, price, imageUrl, sizes, types }) => {
         <h4 className="pizza-block__title">{title}</h4>
         <div className="pizza-block__selector">
           <ul>
-            {types.map((typeId) => (
+            {typesNames.map((type, index) => (
               <li
-                key={typeId}
-                onClick={() => setActiveType(typeId)}
-                className={activeType == typeId ? 'active' : ''}
+                key={type}
+                onClick={() => setActiveType(index)}
+                className={activeType == index ? 'active' : ''}
               >
-                {typesNames[typeId]}
+                {type}
               </li>
             ))}
           </ul>
