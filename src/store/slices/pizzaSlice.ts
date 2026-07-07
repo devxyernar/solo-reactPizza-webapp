@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 export interface Pizzas {
@@ -61,9 +61,7 @@ export const pizzasSlice = createSlice({
       state.error = action.payload as string;
     });
   },
-  reducers: {
-    loadPizzas: (state, { payload }: PayloadAction<Pizzas>) => {},
-  },
+  reducers: {},
 });
 
 export default pizzasSlice.reducer;

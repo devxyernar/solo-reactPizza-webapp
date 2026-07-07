@@ -1,6 +1,5 @@
-import axios from 'axios';
 import qs from 'qs';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,6 +10,7 @@ import PizzasSkeleton from '@/components/Skeleton/Skeleton';
 import { Sort, sortList } from '@/components/Sort/Sort';
 
 import { setCategoryId, setCurrentPage, setFilters, setSort } from '@/store/slices/filterSlice';
+import { fetchPizzas } from '@/store/slices/pizzaSlice';
 
 export const Home = () => {
   // React Router
@@ -25,11 +25,9 @@ export const Home = () => {
   const categoryId = useSelector((state) => state.filter.categoryId);
   const sortType = useSelector((state) => state.filter.sort);
   const currentPage = useSelector((state) => state.filter.currentPage);
-
-  // Local State
-  const [items, setItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
+  const pageItems = useSelector((state) => state.pizzas.items);
+  const status = useSelector((state) => state.pizzas.status);
+  const isError = useSelector((state) => state.pizzas.error === 'rejected');
 
   // Handlers
   const onChangeCategory = (index) => {
@@ -53,27 +51,12 @@ export const Home = () => {
   }, []);
   // Fetch pizzas
   useEffect(() => {
-    setIsLoading(true);
-
     const sortBy = sortType.sortProperty.replace('-', '');
     const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
     const category = categoryId > 0 ? `&category=${categoryId}` : '';
     const search = searchValue ? `&search=${searchValue}` : '';
 
-    axios
-      .get(
-        `https://699a19b6377ac05ce28d3cd2.mockapi.io/items?page=${currentPage}&limit=30${category}&sortBy=${sortBy}&order=${order}${search}`,
-      )
-      .then((res) => {
-        setItems(res.data);
-        setIsLoading(false);
-      })
-      .catch(() => {
-        setIsError(true);
-        setIsLoading(false);
-      });
-
-    window.scrollTo(0, 0);
+    dispatch(fetchPizzas({ sortBy, order, category, search, currentPage }));
   }, [categoryId, sortType, searchValue, currentPage]);
 
   // Sync filters with URL
@@ -91,7 +74,7 @@ export const Home = () => {
 
   // Derived data
 
-  const pizzas = items.map((obj) => <ContentItems key={obj.id} {...obj} />);
+  const pizzas = pageItems.map((obj) => <ContentItems key={obj.id} {...obj} />);
 
   const skeletons = [...new Array(6)].map((_, index) => <PizzasSkeleton key={index} />);
 
@@ -116,7 +99,7 @@ export const Home = () => {
           <strong>Произошла ошибка, пицц не будет 😭</strong>
         </div>
       ) : (
-        <div className="content__items">{isLoading ? skeletons : pizzas}</div>
+        <div className="content__items">{status === 'pending' ? skeletons : pizzas}</div>
       )}
 
       <Pagination onChangePage={onChangePage} />
