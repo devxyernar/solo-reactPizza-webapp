@@ -1,5 +1,5 @@
 import qs from 'qs';
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -29,18 +29,26 @@ export const Home = () => {
   const status = useSelector((state) => state.pizzas.status);
   const isError = useSelector((state) => state.pizzas.error === 'rejected');
 
-  // Handlers
-  const onChangeCategory = (index) => {
-    dispatch(setCategoryId(index));
-  };
+  const onChangeCategory = useCallback(
+    (index) => {
+      dispatch(setCategoryId(index));
+    },
+    [dispatch],
+  );
 
-  const onChangeSortType = (obj) => {
-    dispatch(setSort(obj));
-  };
+  const onChangeSortType = useCallback(
+    (obj) => {
+      dispatch(setSort(obj));
+    },
+    [dispatch],
+  );
 
-  const onChangePage = (page) => {
-    dispatch(setCurrentPage(page));
-  };
+  const onChangePage = useCallback(
+    (page) => {
+      dispatch(setCurrentPage(page));
+    },
+    [dispatch],
+  );
 
   useEffect(() => {
     if (window.location.search) {

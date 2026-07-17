@@ -1,4 +1,7 @@
-export const Categories = ({ value, onClickCategory }) => {
+import { memo } from 'react';
+
+export const Categories = memo(({ value, onClickCategory }) => {
+  console.log('Категорий загрузились');
   const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
 
   return (
@@ -12,4 +15,4 @@ export const Categories = ({ value, onClickCategory }) => {
       </ul>
     </div>
   );
-};
+});
