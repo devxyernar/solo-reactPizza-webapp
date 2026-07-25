@@ -3,14 +3,19 @@ import { useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { Categories } from '@/components/Categories/Categories';
-import { ContentItems } from '@/components/ContentItems/ContentItems';
-import { Pagination } from '@/components/Pagination/Pagination';
-import PizzasSkeleton from '@/components/Skeleton/Skeleton';
-import { Sort, sortList } from '@/components/Sort/Sort';
+import { Categories } from '@/features/filter-pizzas/ui/Categories';
+import { PizzaCard } from '@/entities/pizza/ui/PizzaCard';
+import { Pagination } from '@/shared/ui/Pagination/Pagination';
+import PizzasSkeleton from '@/entities/pizza/ui/PizzaSkeleton';
+import { Sort, sortList } from '@/features/filter-pizzas/ui/Sort';
 
-import { setCategoryId, setCurrentPage, setFilters, setSort } from '@/store/slices/filterSlice';
-import { fetchPizzas } from '@/store/slices/pizzaSlice';
+import {
+  setCategoryId,
+  setCurrentPage,
+  setFilters,
+  setSort,
+} from '@/features/filter-pizzas/model/filterSlice';
+import { fetchPizzas } from '@/entities/pizza/model/pizzaSlice';
 
 export const Home = () => {
   // React Router
@@ -82,7 +87,7 @@ export const Home = () => {
 
   // Derived data
 
-  const pizzas = pageItems.map((obj) => <ContentItems key={obj.id} {...obj} />);
+  const pizzas = pageItems.map((obj) => <PizzaCard key={obj.id} {...obj} />);
 
   const skeletons = [...new Array(6)].map((_, index) => <PizzasSkeleton key={index} />);
 
