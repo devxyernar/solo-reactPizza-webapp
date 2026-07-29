@@ -3,19 +3,19 @@ import { useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { Categories } from '@/features/filter-pizzas/ui/Categories';
 import { PizzaCard } from '@/entities/pizza/ui/PizzaCard';
-import { Pagination } from '@/shared/ui/Pagination/Pagination';
 import PizzasSkeleton from '@/entities/pizza/ui/PizzaSkeleton';
+import { Categories } from '@/features/filter-pizzas/ui/Categories';
 import { Sort, sortList } from '@/features/filter-pizzas/ui/Sort';
+import { Pagination } from '@/shared/ui/Pagination/Pagination';
 
+import { fetchPizzas } from '@/entities/pizza/model/pizzaSlice';
 import {
   setCategoryId,
   setCurrentPage,
   setFilters,
   setSort,
 } from '@/features/filter-pizzas/model/filterSlice';
-import { fetchPizzas } from '@/entities/pizza/model/pizzaSlice';
 
 export const Home = () => {
   // React Router
@@ -32,7 +32,7 @@ export const Home = () => {
   const currentPage = useSelector((state) => state.filter.currentPage);
   const pageItems = useSelector((state) => state.pizzas.items);
   const status = useSelector((state) => state.pizzas.status);
-  const isError = useSelector((state) => state.pizzas.error === 'rejected');
+  const isError = useSelector((state) => state.pizzas.status === 'rejected');
 
   const onChangeCategory = useCallback(
     (index) => {
