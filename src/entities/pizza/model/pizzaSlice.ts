@@ -14,7 +14,7 @@ export interface Pizzas {
 
 interface PizzasState {
   items: Pizzas[];
-  status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
+  status: 'pending' | 'fulfilled' | 'rejected';
   error: string | null;
 }
 
@@ -49,12 +49,14 @@ export const pizzasSlice = createSlice({
   } as PizzasState,
   extraReducers: (builder) => {
     builder.addCase(fetchPizzas.pending, (state) => {
+      state.error = null;
       state.status = 'pending';
       state.items = [];
     });
     builder.addCase(fetchPizzas.fulfilled, (state, action) => {
       state.status = 'fulfilled';
       state.items = action.payload;
+      state.error = null;
     });
     builder.addCase(fetchPizzas.rejected, (state, action) => {
       state.status = 'rejected';

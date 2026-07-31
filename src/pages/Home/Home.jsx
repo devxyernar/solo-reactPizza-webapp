@@ -55,22 +55,22 @@ export const Home = () => {
     [dispatch],
   );
 
-  useEffect(() => {
-    if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1));
-      const sortObj = sortList.find((obj) => obj.sortProperty === params.sortProperty);
-      dispatch(setFilters({ ...params, sort: sortObj }));
-    }
-  }, []);
-  // Fetch pizzas
-  useEffect(() => {
+  const getPizzas = useCallback(() => {
     const sortBy = sortType.sortProperty.replace('-', '');
     const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
     const category = categoryId > 0 ? `&category=${categoryId}` : '';
     const search = searchValue ? `&search=${searchValue}` : '';
 
     dispatch(fetchPizzas({ sortBy, order, category, search, currentPage }));
-  }, [categoryId, sortType, searchValue, currentPage]);
+  }, [categoryId, sortType, searchValue, currentPage, dispatch]);
+
+  useEffect(() => {
+    getPizzas();
+  }, [getPizzas]);
+
+  const handleRetry = () => {
+    getPizzas();
+  };
 
   // Sync filters with URL
   useEffect(() => {
@@ -83,19 +83,24 @@ export const Home = () => {
       navigate(`?${queryString}`);
     }
     isMounted.current = true;
-  }, [categoryId, sortType.sortProperty, currentPage]);
+  }, [categoryId, sortType.sortProperty, currentPage, navigate]);
+
+  useEffect(() => {
+    if (window.location.search) {
+      const params = qs.parse(window.location.search.substring(1));
+      const sortObj = sortList.find((obj) => obj.sortProperty === params.sortProperty);
+      dispatch(setFilters({ ...params, sort: sortObj }));
+    }
+  }, [dispatch]);
 
   // Derived data
-
   const pizzas = pageItems.map((obj) => <PizzaCard key={obj.id} {...obj} />);
-
   const skeletons = [...new Array(6)].map((_, index) => <PizzasSkeleton key={index} />);
 
   return (
     <div className="container">
       <div className="content__top">
         <Categories value={categoryId} onClickCategory={onChangeCategory} />
-
         <Sort value={sortType} onChangeSort={onChangeSortType} />
       </div>
 
@@ -105,17 +110,24 @@ export const Home = () => {
         <div
           style={{
             display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '15px',
             justifyContent: 'center',
             fontSize: '24px',
+            margin: '40px 0',
           }}
         >
           <strong>Произошла ошибка, пицц не будет 😭</strong>
+          <button onClick={handleRetry} className="button">
+            Попробовать снова
+          </button>
         </div>
       ) : (
         <div className="content__items">{status === 'pending' ? skeletons : pizzas}</div>
       )}
 
-      <Pagination onChangePage={onChangePage} />
+      {!isError && <Pagination onChangePage={onChangePage} />}
     </div>
   );
 };
