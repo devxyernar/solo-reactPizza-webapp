@@ -18,21 +18,17 @@ import {
 } from '@/features/filter-pizzas/model/filterSlice';
 
 export const Home = () => {
-  // React Router
   const navigate = useNavigate();
-
-  // Redux
   const dispatch = useDispatch();
-
   const isMounted = useRef(false);
 
+  // Селекторы
   const searchValue = useSelector((state) => state.filter.searchValue);
   const categoryId = useSelector((state) => state.filter.categoryId);
   const sortType = useSelector((state) => state.filter.sort);
   const currentPage = useSelector((state) => state.filter.currentPage);
   const pageItems = useSelector((state) => state.pizzas.items);
   const status = useSelector((state) => state.pizzas.status);
-  const isError = useSelector((state) => state.pizzas.status === 'rejected');
 
   const onChangeCategory = useCallback(
     (index) => {
@@ -72,7 +68,6 @@ export const Home = () => {
     getPizzas();
   };
 
-  // Sync filters with URL
   useEffect(() => {
     if (isMounted.current) {
       const queryString = qs.stringify({
@@ -93,20 +88,23 @@ export const Home = () => {
     }
   }, [dispatch]);
 
-  // Derived data
-  const pizzas = pageItems.map((obj) => <PizzaCard key={obj.id} {...obj} />);
+  const isFulfilled = status === 'fulfilled';
+  const isItemsEmpty = isFulfilled && pageItems.length === 0;
+
   const skeletons = [...new Array(6)].map((_, index) => <PizzasSkeleton key={index} />);
+  const pizzas = pageItems.map((obj) => <PizzaCard key={obj.id} {...obj} />);
 
-  return (
-    <div className="container">
-      <div className="content__top">
-        <Categories value={categoryId} onClickCategory={onChangeCategory} />
-        <Sort value={sortType} onChangeSort={onChangeSortType} />
-      </div>
+  const emptyStateMessage = searchValue
+    ? 'По вашему запросу ничего не найдено'
+    : 'В этой категории пока нет пицц';
 
-      <h2 className="content__title">Все пиццы</h2>
+  const renderContent = () => {
+    if (status === 'pending') {
+      return <div className="content__items">{skeletons}</div>;
+    }
 
-      {isError ? (
+    if (status === 'rejected') {
+      return (
         <div
           style={{
             display: 'flex',
@@ -123,11 +121,32 @@ export const Home = () => {
             Попробовать снова
           </button>
         </div>
-      ) : (
-        <div className="content__items">{status === 'pending' ? skeletons : pizzas}</div>
-      )}
+      );
+    }
 
-      {!isError && <Pagination onChangePage={onChangePage} />}
+    if (isItemsEmpty) {
+      return (
+        <div style={{ textAlign: 'center', padding: '40px 0', fontSize: '20px' }}>
+          <strong>{emptyStateMessage}</strong>
+        </div>
+      );
+    }
+
+    return <div className="content__items">{pizzas}</div>;
+  };
+
+  return (
+    <div className="container">
+      <div className="content__top">
+        <Categories value={categoryId} onClickCategory={onChangeCategory} />
+        <Sort value={sortType} onChangeSort={onChangeSortType} />
+      </div>
+
+      <h2 className="content__title">Все пиццы</h2>
+
+      {renderContent()}
+
+      {isFulfilled && !isItemsEmpty && <Pagination onChangePage={onChangePage} />}
     </div>
   );
 };

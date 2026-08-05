@@ -12,7 +12,23 @@ export interface CartItems {
 interface CartState {
   items: CartItems[];
 }
+interface PlusItemPayload {
+  id: number;
+  size: string;
+  type: string;
+}
+interface MinusItemPayload {
+  id: number;
+  size: string;
+  type: string;
+}
 
+interface RemoveItemPayload {
+  id: number;
+  title: string;
+  size: string;
+  type: string;
+}
 export interface RootState {
   cart: CartState;
 }
@@ -37,6 +53,57 @@ export const cartSlice = createSlice({
         });
       }
     },
+    plusItem: (state, action: PayloadAction<PlusItemPayload>) => {
+      const findItem = state.items.find(
+        (obj) =>
+          obj.id === action.payload.id &&
+          obj.size === action.payload.size &&
+          obj.type === action.payload.type,
+      );
+      if (findItem) {
+        findItem.count++;
+
+        if (findItem.count === 0) {
+          state.items = state.items.filter(
+            (obj) =>
+              !(
+                obj.id === action.payload.id &&
+                obj.size === action.payload.size &&
+                obj.type === action.payload.type
+              ),
+          );
+        }
+      }
+    },
+    minusItem(state, action: PayloadAction<MinusItemPayload>) {
+      const findItem = state.items.find(
+        (obj) =>
+          obj.id === action.payload.id &&
+          obj.size === action.payload.size &&
+          obj.type === action.payload.type,
+      );
+      if (findItem) {
+        findItem.count--;
+
+        if (findItem.count === 0) {
+          state.items = state.items.filter(
+            (obj) =>
+              !(
+                obj.id === action.payload.id &&
+                obj.size === action.payload.size &&
+                obj.type === action.payload.type
+              ),
+          );
+        }
+      }
+    },
+    // we can the specify payload action as number or just specify the comparing obj.id to payload.id i'd prefer the second one
+    removeItem(state, action: PayloadAction<RemoveItemPayload>) {
+      state.items = state.items.filter((obj) => {
+        obj.id !== action.payload.id;
+      });
+    },
+
     clearCart: (state) => {
       state.items = [];
     },
@@ -58,6 +125,6 @@ export const selectTotalQuantity = createSelector([selectCartItems], (items): nu
   }, 0),
 );
 
-export const { addItems, clearCart } = cartSlice.actions;
+export const { addItems, clearCart, minusItem, plusItem, removeItem } = cartSlice.actions;
 
 export default cartSlice.reducer;

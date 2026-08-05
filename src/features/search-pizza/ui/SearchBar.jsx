@@ -19,6 +19,7 @@ export const SearchBar = () => {
   const onChangeSearch = (i) => {
     dispatch(setSearchValue(i));
   };
+
   const onClickClear = () => {
     dispatch(setSearchValue(''));
     setValue('');
