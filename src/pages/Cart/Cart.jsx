@@ -2,34 +2,40 @@ import {
   minusItem,
   plusItem,
   removeItem,
+  clearCart,
   selectCartItems,
   selectTotalAmount,
   selectTotalQuantity,
-} from '@/entities/cart/model/cartSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router';
+} from '@/entities/cart/model/cartSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router'
 
 export const Cart = () => {
-  const dispatch = useDispatch();
-  const cartItems = useSelector(selectCartItems);
-  const cartAmount = useSelector(selectTotalAmount);
-  const cartQuantity = useSelector(selectTotalQuantity);
+  const dispatch = useDispatch()
+  const cartItems = useSelector(selectCartItems)
+  const cartAmount = useSelector(selectTotalAmount)
+  const cartQuantity = useSelector(selectTotalQuantity)
 
   const onClickMinus = (id, type, size) => {
-    dispatch(minusItem({ id, size, type }));
-  };
+    dispatch(minusItem({ id, size, type }))
+  }
   const onClickPlus = (id, type, size) => {
-    dispatch(plusItem({ id, type, size }));
-  };
+    dispatch(plusItem({ id, type, size }))
+  }
 
   const onClickRemove = (id, type, size) => {
-    const isConfirmed = cartItems.map((item) => {
-      window.confirm(`Вы точно хотите удалить пиццу "${item.title}" из корзины?`);
-    });
+    const isConfirmed = window.confirm(`Вы точно хотите удалить пиццу ${type} из корзины?`)
     if (isConfirmed) {
-      dispatch(removeItem({ id, type, size }));
+      dispatch(removeItem({ id, type, size }))
     }
-  };
+  }
+  const onClickClear = () => {
+    const isConfirmed = window.confirm(`Вы точно хотите очистить корзину?`)
+
+    if (isConfirmed) {
+      dispatch(clearCart())
+    }
+  }
 
   return (
     <div>
@@ -68,7 +74,7 @@ export const Cart = () => {
               </svg>
               Корзина
             </h2>
-            <div className="cart__clear">
+            <div onClick={onClickClear} className="cart__clear">
               <svg
                 width="20"
                 height="20"
@@ -124,8 +130,8 @@ export const Cart = () => {
                   <div
                     className="button button--outline button--circle cart__item-count-minus"
                     onClick={(cartItems) => {
-                      console.log(item.count);
-                      onClickMinus(item.id, item.type, item.size);
+                      console.log(item.count)
+                      onClickMinus(item.id, item.type, item.size)
                     }}
                   >
                     <svg
@@ -149,8 +155,8 @@ export const Cart = () => {
                   <div
                     className="button button--outline button--circle cart__item-count-plus"
                     onClick={() => {
-                      console.log(item.count);
-                      onClickPlus(item.id, item.type, item.size);
+                      console.log(item.count)
+                      onClickPlus(item.id, item.type, item.size)
                     }}
                   >
                     <svg
@@ -178,7 +184,7 @@ export const Cart = () => {
                   <div
                     className="button button--outline button--circle"
                     onClick={() => {
-                      onClickRemove(item.id, item.type, item.size);
+                      onClickRemove(item.id, item.type, item.size)
                     }}
                   >
                     <svg
@@ -240,5 +246,5 @@ export const Cart = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
