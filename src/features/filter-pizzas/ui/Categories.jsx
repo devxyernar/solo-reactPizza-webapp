@@ -1,9 +1,8 @@
-import { memo } from 'react';
-import './Categories.scss';
+import { memo } from 'react'
+import './Categories.scss'
 
 export const Categories = memo(({ value, onClickCategory }) => {
-  console.log('Категорий загрузились');
-  const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
+  const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые']
 
   return (
     <div className="categories">
@@ -15,5 +14,5 @@ export const Categories = memo(({ value, onClickCategory }) => {
         ))}
       </ul>
     </div>
-  );
-});
+  )
+})

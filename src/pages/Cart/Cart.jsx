@@ -130,7 +130,6 @@ export const Cart = () => {
                   <div
                     className="button button--outline button--circle cart__item-count-minus"
                     onClick={(cartItems) => {
-                      console.log(item.count)
                       onClickMinus(item.id, item.type, item.size)
                     }}
                   >
@@ -155,7 +154,6 @@ export const Cart = () => {
                   <div
                     className="button button--outline button--circle cart__item-count-plus"
                     onClick={() => {
-                      console.log(item.count)
                       onClickPlus(item.id, item.type, item.size)
                     }}
                   >
