@@ -1,44 +1,45 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import axios from 'axios'
 
 export interface Pizzas {
-  id: number;
-  imageUrl: string;
-  title: string;
-  types: number[];
-  sizes: number[];
-  price: number;
-  category: number;
-  rating: number;
+  id: number
+  imageUrl: string
+  title: string
+  types: number[]
+  sizes: number[]
+  price: number
+  category: number
+  rating: number
 }
 
 interface PizzasState {
-  items: Pizzas[];
-  status: 'pending' | 'fulfilled' | 'rejected';
-  error: string | null;
+  items: Pizzas[]
+  status: 'pending' | 'fulfilled' | 'rejected'
+  error: string | null
 }
 
 export interface FetchPizzasArgs {
-  sortBy: string;
-  order: string;
-  category: string;
-  search: string;
-  currentPage: number;
+  sortBy: string
+  order: string
+  category: string
+  search: string
+  currentPage: number
 }
 
 export const fetchPizzas = createAsyncThunk<Pizzas[], FetchPizzasArgs, { rejectValue: string }>(
   '/pizzas/fetchPizzas',
-  async ({ sortBy, order, category, search, currentPage }, { rejectWithValue }) => {
+  async ({ sortBy, order, category, search, currentPage }, { rejectWithValue, signal }) => {
     try {
       const response = await axios.get<Pizzas[]>(
         `https://699a19b6377ac05ce28d3cd2.mockapi.io/items?page=${currentPage}&limit=30${category}&sortBy=${sortBy}&order=${order}${search}`,
-      );
-      return response.data;
+        { signal },
+      )
+      return response.data
     } catch (error: any) {
-      return rejectWithValue(error.message || 'Failed to fecth status');
+      return rejectWithValue(error.message || 'Failed to fecth status')
     }
   },
-);
+)
 
 export const pizzasSlice = createSlice({
   name: 'items',
@@ -49,21 +50,21 @@ export const pizzasSlice = createSlice({
   } as PizzasState,
   extraReducers: (builder) => {
     builder.addCase(fetchPizzas.pending, (state) => {
-      state.error = null;
-      state.status = 'pending';
-      state.items = [];
-    });
+      state.error = null
+      state.status = 'pending'
+      state.items = []
+    })
     builder.addCase(fetchPizzas.fulfilled, (state, action) => {
-      state.status = 'fulfilled';
-      state.items = action.payload;
-      state.error = null;
-    });
+      state.status = 'fulfilled'
+      state.items = action.payload
+      state.error = null
+    })
     builder.addCase(fetchPizzas.rejected, (state, action) => {
-      state.status = 'rejected';
-      state.error = action.payload as string;
-    });
+      state.status = 'rejected'
+      state.error = action.payload as string
+    })
   },
   reducers: {},
-});
+})
 
-export default pizzasSlice.reducer;
+export default pizzasSlice.reducer

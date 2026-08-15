@@ -99,14 +99,17 @@ export const Home = () => {
     const category = categoryId > 0 ? `&category=${categoryId}` : ''
     const search = searchValue ? `&search=${searchValue}` : ''
 
-    dispatch(fetchPizzas({ sortBy, order, category, search, currentPage }))
+    return dispatch(fetchPizzas({ sortBy, order, category, search, currentPage }))
   }, [categoryId, sortType, searchValue, currentPage, dispatch])
 
   useEffect(() => {
     if (filtersInitialized === false) {
       return
     }
-    getPizzas()
+    const requestPizzas = getPizzas()
+    return () => {
+      requestPizzas.abort()
+    }
   }, [getPizzas, filtersInitialized])
 
   const handleRetry = () => {
