@@ -1,21 +1,21 @@
-import { addItems } from '@/entities/cart/model/cartSlice';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import './PizzaCard.scss';
+import { addItems } from '@/entities/cart/model/cartSlice'
+import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import './PizzaCard.scss'
 
 export const PizzaCard = ({ id, title, price, imageUrl, sizes, types }) => {
   const totalPizzaCount = useSelector((state) =>
     state.cart.items.reduce((acc, item) => {
       if (item.id === id) {
-        return acc + item.count;
+        return acc + item.count
       }
-      return acc;
+      return acc
     }, 0),
-  );
-  const dispatch = useDispatch();
-  const [activeType, setActiveType] = useState(0);
-  const [activeSize, setActiveSize] = useState(0);
-  const typesNames = ['тонкое', 'традиционное'];
+  )
+  const dispatch = useDispatch()
+  const [activeType, setActiveType] = useState(types[0])
+  const [activeSize, setActiveSize] = useState(0)
+  const typesNames = ['тонкое', 'традиционное']
   const onClickAdd = () => {
     const pizzaItem = {
       title,
@@ -24,9 +24,9 @@ export const PizzaCard = ({ id, title, price, imageUrl, sizes, types }) => {
       imageUrl,
       type: typesNames[activeType],
       size: sizes[activeSize],
-    };
-    dispatch(addItems(pizzaItem));
-  };
+    }
+    dispatch(addItems(pizzaItem))
+  }
   return (
     <div className="pizza-block-wrapper">
       <div className="pizza-block">
@@ -34,13 +34,13 @@ export const PizzaCard = ({ id, title, price, imageUrl, sizes, types }) => {
         <h4 className="pizza-block__title">{title}</h4>
         <div className="pizza-block__selector">
           <ul>
-            {typesNames.map((type, index) => (
+            {types.map((type, index) => (
               <li
                 key={type}
-                onClick={() => setActiveType(index)}
-                className={activeType == index ? 'active' : ''}
+                onClick={() => setActiveType(type)}
+                className={activeType == type ? 'active' : ''}
               >
-                {type}
+                {typesNames[type]}
               </li>
             ))}
           </ul>
@@ -77,5 +77,5 @@ export const PizzaCard = ({ id, title, price, imageUrl, sizes, types }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

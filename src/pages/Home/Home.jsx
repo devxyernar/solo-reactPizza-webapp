@@ -174,7 +174,9 @@ export const Home = () => {
 
       {renderContent()}
 
-      {isFulfilled && !isItemsEmpty && <Pagination onChangePage={onChangePage} />}
+      {isFulfilled && !isItemsEmpty && (
+        <Pagination pageCount={3} onChangePage={onChangePage} currentPage={currentPage} />
+      )}
     </div>
   )
 }
