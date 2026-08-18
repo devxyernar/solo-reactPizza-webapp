@@ -25,6 +25,7 @@ interface MinusItemPayload {
 
 interface RemoveItemPayload {
   id: number
+  
   size: string
   type: string
 }
@@ -32,11 +33,21 @@ export interface RootState {
   cart: CartState
 }
 
+const getCartFromLocalStorage = (): CartState => {
+  try {
+    const serializedState = localStorage.getItem('items')
+    if (serializedState === null) {
+      return { items: [] }
+    }
+    return JSON.parse(serializedState) as CartState
+  } catch (err) {
+    return { items: [] }
+  }
+}
+
 export const cartSlice = createSlice({
   name: 'cart',
-  initialState: {
-    items: [],
-  } as CartState,
+  initialState: getCartFromLocalStorage(),
   reducers: {
     addItems: (state, { payload }: PayloadAction<CartItems>) => {
       const newItem = payload
@@ -102,6 +113,7 @@ export const cartSlice = createSlice({
         (obj) =>
           !(
             obj.id === action.payload.id &&
+
             obj.size === action.payload.size &&
             obj.type === action.payload.type
           ),

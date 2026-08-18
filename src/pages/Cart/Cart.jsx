@@ -9,6 +9,7 @@ import {
 } from '@/entities/cart/model/cartSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router'
+import { EmptyCart } from '../EmptyCart/EmptyCart'
 
 export const Cart = () => {
   const dispatch = useDispatch()
@@ -23,10 +24,14 @@ export const Cart = () => {
     dispatch(plusItem({ id, type, size }))
   }
 
-  const onClickRemove = (id, type, size) => {
-    const isConfirmed = window.confirm(`Вы точно хотите удалить пиццу ${type} из корзины?`)
+  if (cartItems.length === 0) {
+    return <EmptyCart />
+  }
+
+  const onClickRemove = (id, title, type, size) => {
+    const isConfirmed = window.confirm(`Вы точно хотите удалить пиццу ${title} из корзины?`)
     if (isConfirmed) {
-      dispatch(removeItem({ id, type, size }))
+      dispatch(removeItem({ id, title, type, size }))
     }
   }
   const onClickClear = () => {
@@ -116,7 +121,7 @@ export const Cart = () => {
           </div>
           <div className="content__items">
             {cartItems.map((item) => (
-              <div className="cart__item" key={item.id + item.type + item.size}>
+              <div className="cart__item" key={item.id + item.title + item.type + item.size}>
                 <div className="cart__item-img">
                   <img src={item.imageUrl} className="pizza-block__image" alt="Pizza" />
                 </div>
@@ -182,7 +187,7 @@ export const Cart = () => {
                   <div
                     className="button button--outline button--circle"
                     onClick={() => {
-                      onClickRemove(item.id, item.type, item.size)
+                      onClickRemove(item.id, item.title, item.type, item.size)
                     }}
                   >
                     <svg
