@@ -172,15 +172,29 @@ body {
     padding-top: 30px;
     margin-top: 30px;
 
+    @media (max-width: 645px) {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
     &-img {
       display: flex;
       align-items: center;
       margin-right: 15px;
       width: 10%;
 
+      @media (max-width: 645px) {
+        margin-top: 0;
+      }
+
       img {
         width: 80px;
         height: 80px;
+      }
+
+      @media (max-width: 645px) {
+        display: flex;
+        width: 25%;
       }
     }
 
@@ -189,6 +203,11 @@ body {
       flex-direction: column;
       justify-content: center;
       width: 40%;
+
+      @media (max-width: 645px) {
+        display: flex;
+        width: 75%;
+      }
 
       h3 {
         font-weight: bold;
@@ -209,6 +228,11 @@ body {
       justify-content: space-between;
       width: 13%;
 
+      @media (max-width: 645px) {
+        margin-top: 10px;
+        width: 45%;
+      }
+
       &-minus {
         svg {
           path:first-of-type {
@@ -227,6 +251,9 @@ body {
       align-items: center;
       justify-content: center;
       width: 33%;
+      @media (max-width: 645px) {
+        width: 35%;
+      }
 
       b {
         font-weight: bold;
@@ -240,6 +267,11 @@ body {
       align-items: center;
       justify-content: flex-end;
       width: 4%;
+
+      @media (max-width: 645px) {
+        display: flex;
+        width: 15%;
+      }
 
       .button {
         border-color: var(--gray-dark); // Replaced darken($gray, 10)
@@ -274,6 +306,12 @@ body {
     &-details {
       display: flex;
       justify-content: space-between;
+
+      @media (max-width: 645px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
 
       span {
         font-size: 22px;

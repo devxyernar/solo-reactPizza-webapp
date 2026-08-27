@@ -26,12 +26,14 @@ export interface FetchPizzasArgs {
   currentPage: number
 }
 
+const pizzasURL = import.meta.env.VITE_API_URL
+
 export const fetchPizzas = createAsyncThunk<Pizzas[], FetchPizzasArgs, { rejectValue: string }>(
   '/pizzas/fetchPizzas',
   async ({ sortBy, order, category, search, currentPage }, { rejectWithValue, signal }) => {
     try {
       const response = await axios.get<Pizzas[]>(
-        `https://699a19b6377ac05ce28d3cd2.mockapi.io/items?page=${currentPage}&limit=4${category}&sortBy=${sortBy}&order=${order}${search}`,
+        `${pizzasURL}?page=${currentPage}&limit=4${category}&sortBy=${sortBy}&order=${order}${search}`,
         { signal },
       )
       return response.data
