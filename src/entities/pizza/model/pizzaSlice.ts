@@ -8,6 +8,7 @@ export interface Pizzas {
   types: number[]
   sizes: number[]
   price: number
+  prices: number
   category: number
   rating: number
 }

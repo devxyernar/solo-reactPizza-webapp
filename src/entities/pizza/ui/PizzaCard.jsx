@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import './PizzaCard.scss'
 
-export const PizzaCard = ({ id, title, price, imageUrl, sizes, types }) => {
+export const PizzaCard = ({ id, title, prices, imageUrl, sizes, types }) => {
   const totalPizzaCount = useSelector((state) =>
     state.cart.items.reduce((acc, item) => {
       if (item.id === id) {
@@ -16,10 +16,12 @@ export const PizzaCard = ({ id, title, price, imageUrl, sizes, types }) => {
   const [activeType, setActiveType] = useState(types[0])
   const [activeSize, setActiveSize] = useState(0)
   const typesNames = ['тонкое', 'традиционное']
+
+  const currentPrice = prices[activeSize]
   const onClickAdd = () => {
     const pizzaItem = {
       title,
-      price,
+      price: currentPrice,
       id,
       imageUrl,
       type: typesNames[activeType],
@@ -57,7 +59,7 @@ export const PizzaCard = ({ id, title, price, imageUrl, sizes, types }) => {
           </ul>
         </div>
         <div className="pizza-block__bottom">
-          <div className="pizza-block__price">от {price} ₽</div>
+          <div className="pizza-block__price">от {currentPrice} ₽</div>
           <div onClick={onClickAdd} className="button button--outline button--add">
             <svg
               width="12"
