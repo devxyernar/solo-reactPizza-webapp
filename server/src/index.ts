@@ -1,5 +1,5 @@
 import express from 'express'
-import type { Order } from './types.ts'
+import { type Order, CreateOrderRequestSchema, OrderSchema } from './types.js'
 
 const app = express()
 const PORT = 3000
@@ -21,38 +21,45 @@ app.post('/api/checkout/test', (req, res) => {
 })
 
 app.post('/api/orders', (req, res) => {
-  const { customer, items } = req.body
-  if (!customer || !customer.name || !customer.phone || !customer.address) {
-    return res.status(400).json({
-      success: false,
-      message: 'Заполните все данные клиента!',
-    })
+  if (!req.body || Object.keys(req.body).length === 0) {
+    return res.status(400).json({ error: 'Request Body is required' })
   }
 
-  if (!items || !Array.isArray(items) || items.length === 0) {
-    return res.status(400).json({
-      success: false,
-      message: 'Корзина не может быть пустой!',
-    })
-  }
-  const newOrder = {
-    id: `order_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
-    customer: {
-      name: customer.name,
-      phone: customer.phone,
-      address: customer.address,
-    },
-    items: items,
+  const result = CreateOrderRequestSchema.safeParse(req.body)
+
+  if (!result.success) {
+    return res
+      .status(400)
+      .json({ success: false, error: 'Validation failed', details: result.error.format() })
   }
 
-  orders.push(newOrder)
-  res.status(201).json({
-    success: true,
-    message: 'Order created successfully!',
-    order: newOrder,
-  })
+  const { customer, items } = result.data
+  try {
+    const newOrder: Order = OrderSchema.parse({
+      id: crypto.randomUUID(),
+      customer: {
+        name: customer.name,
+        phone: customer.phone,
+        address: customer.address,
+      },
+      items: items,
+    })
+
+    orders.push(newOrder)
+
+    return res.status(201).json({
+      success: true,
+      message: 'Order created successfully!',
+      order: newOrder,
+    })
+  } catch (error) {
+    console.error('Ошибка при создании заказа:', error)
+    return res.status(500).json({
+      success: false,
+      error: 'Internal Server Error',
+    })
+  }
 })
-
 app.get('/api/orders', (req, res) => {
   res.json(orders)
 })

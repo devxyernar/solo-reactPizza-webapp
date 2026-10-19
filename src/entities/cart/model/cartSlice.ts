@@ -25,7 +25,7 @@ interface MinusItemPayload {
 
 interface RemoveItemPayload {
   id: number
-  
+
   size: string
   type: string
 }
@@ -72,17 +72,6 @@ export const cartSlice = createSlice({
       )
       if (findItem) {
         findItem.count++
-
-        if (findItem.count === 0) {
-          state.items = state.items.filter(
-            (obj) =>
-              !(
-                obj.id === action.payload.id &&
-                obj.size === action.payload.size &&
-                obj.type === action.payload.type
-              ),
-          )
-        }
       }
     },
     minusItem(state, action: PayloadAction<MinusItemPayload>) {
@@ -113,7 +102,6 @@ export const cartSlice = createSlice({
         (obj) =>
           !(
             obj.id === action.payload.id &&
-
             obj.size === action.payload.size &&
             obj.type === action.payload.type
           ),
